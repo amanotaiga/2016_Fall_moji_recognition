@@ -1,3 +1,5 @@
+#based on https://github.com/yukoba/CnnJapaneseCharacter/blob/master/src/read_hiragana_file.py
+
 import struct
 from PIL import Image, ImageEnhance
 import numpy as np
