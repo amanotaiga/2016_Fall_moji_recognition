@@ -1,2 +1,4 @@
 2016.10.25 trace code https://github.com/yukoba/CnnJapaneseCharacter and have one question to be solved.
-2016.10.27 able to read one file of ETL1C and ETL8G
+2016.10.27 able to read single file of ETL1C and ETL8G
+2016.10.28 able to read multi files of ETL1C ETL6 ETL7 ETL8G
+  next goal:load ETL4、ETL5
