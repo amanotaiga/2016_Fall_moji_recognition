@@ -1,3 +1,6 @@
+# https://github.com/fchollet/keras/blob/master/examples/mnist_cnn.py
+# https://github.com/fchollet/keras/blob/master/examples/cifar10_cnn.py
+#https://github.com/yukoba/CnnJapaneseCharacter/blob/master/src/learn.py
 import numpy as np
 import scipy.misc
 from keras import backend as K
