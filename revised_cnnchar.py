@@ -36,19 +36,24 @@ def get_ETL_data(filenum):
         filename = 'ETL1/ETL1C_{:02d}'.format(filenum)
         with open(filename, 'rb') as f:
             f.seek(0 * 1445 * sz_record)
+            #8 different characters 
             for j in range(8):
+                # 1445 writers
                 for i in range(1445):
                     r = read_record_ETL1C(f)
                     new_img.paste(r[-1], (0,0))
-                    iE = Image.eval(new_img, lambda x: 255-x*16)
+                    iE = Image.eval(new_img, lambda x: not x)
                     #if(i%100==0):
                        #fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
                        #iE.save('ETL1C_01_new_data/'+fn, 'PNG')
                     shapes = 64, 64
+					#put the image into an array
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
                     X.append(outData)	
+					#append the label of the image
                     Y.append(r[3])
         X, Y = np.asarray(X, dtype=np.int32), np.asarray(Y, dtype=np.int32)
+		#return array X and array Y
         return (X,Y)
 
 
@@ -57,11 +62,13 @@ def data():
     for i in range(1, 2):
         chars, labs = get_ETL_data(i)
         if (i == 1):
+            #get data X and data Y
             characters = chars
             labels = labs
         else:
             characters = np.concatenate((characters, chars), axis=0)
             labels = np.concatenate((labels, labs), axis=0)
+    #count the numbers of label and rename from 0 to label-1
     unique_labels = list(set(labels))
     labels_dict = {unique_labels[i]: i for i in range(len(unique_labels))}
     new_labels = np.array([labels_dict[l] for l in labels], dtype=np.int32)
@@ -71,7 +78,6 @@ def data():
                                                                          new_labels_shuffle,
                                                                          test_size=0.2,
                                                                          random_state=15)
-    # reshape to (1, 64, 64)
     #X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
     #X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
     #input_shape = (1, 64, 64)
