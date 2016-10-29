@@ -37,7 +37,7 @@ def get_ETL_data(filenum):
         filename = 'ETL1/ETL1C_{:02d}'.format(filenum)
         with open(filename, 'rb') as f:
                 f.seek(0 * 1445 * sz_record)
-                for i in range(10):
+                for i in range(1445):
                     r = read_record_ETL1C(f)
                     new_img.paste(r[-1], (64*(i%32), 64*(i/32)))
                     iE = Image.eval(r[-1], lambda x: 255-x*16)
@@ -70,18 +70,9 @@ def data():
                                                                          test_size=0.2,
                                                                          random_state=15)
     # reshape to (1, 64, 64)
-    #X_train = x_train.reshape(
-    #    (x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
-    #X_test = x_test.reshape(
-    #    (x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
-    if K.image_dim_ordering() == 'th':
-        X_train = x_train.reshape(x_train.shape[0], 1, 32, 32)
-        X_test = x_test.reshape(x_test.shape[0], 1, 32, 32)
-        input_shape = (1, 32, 32)
-    else:
-        X_train = x_train.reshape(x_train.shape[0], 32, 32, 1)
-        X_test = x_test.reshape(x_test.shape[0], 32, 32, 1)
-        input_shape = (32, 32, 1)
+    X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
+    X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
+    input_shape = (1, 64, 64)
     # convert class vectors to binary class matrices
     nb_classes = len(unique_labels)
     Y_train = np_utils.to_categorical(y_train, nb_classes)
@@ -89,15 +80,14 @@ def data():
     return X_train, Y_train, X_test, Y_test,nb_classes
 
 	
-X_train, y_train, X_test, y_test,nb_classes = data()
-n_output = y_train.shape[1]
+X_train, Y_train, X_test, Y_test,nb_classes = data()
+n_output = Y_train.shape[1]
 
 datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.20)
 datagen.fit(X_train)
 
 
 model = Sequential()
-input_shape = (32, 32, 1)
 
 def my_init(shape, name=None):
     return initializations.normal(shape, scale=0.1, name=name)
@@ -140,6 +130,6 @@ m6_1()
 
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
-model.fit_generator(datagen.flow(X_train, y_train, batch_size=16), samples_per_epoch=X_train.shape[0],
-                    nb_epoch=3, validation_data=(X_test, y_test))	
+model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), samples_per_epoch=X_train.shape[0],
+                    nb_epoch=3, validation_data=(X_test, Y_test))	
 
