@@ -16,7 +16,7 @@ filename = 'ETL1/ETL1C_01'
 
 def store_array():
     for f_num in (1,4):
-       filename = '/ETL1C/ETL1C_{:02d}'.format(f_num)
+       filename = '/ETL1/ETL1C_{:02d}'.format(f_num)
        with open(filename, 'r') as f:
           ary = np.zeros([32, 1445, 63, 64], dtype=np.uint8)
           f.seek(0 * 2052)
