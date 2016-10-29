@@ -26,11 +26,13 @@ def read_record_ETL1C(f):
     r = struct.unpack('>H2sH6BI4H4B4x2016s4x', s)
     iF = Image.frombytes('F', (64, 63), r[18], 'bit', 4)
     iL = iF.convert('P')
-    return r + (iL,)
+    enhancer = ImageEnhance.Brightness(iL)
+    iT = enhancer.enhance(40)
+    return r + (iT,)
 
 
 def get_ETL_data(filenum):
-        new_img = Image.new('P', (64, 64))
+        new_img = Image.new('1', (64, 64))
         X = []
         Y = []
         filename = 'ETL1/ETL1C_{:02d}'.format(filenum)
@@ -43,9 +45,9 @@ def get_ETL_data(filenum):
                     r = read_record_ETL1C(f)
                     new_img.paste(r[-1], (0,0))
                     iE = Image.eval(new_img, lambda x: not x)
-                    #if(i%100==0):
-                       #fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
-                       #iE.save('ETL1C_01_new_data/'+fn, 'PNG')
+                    if(i%100==0):
+                       fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
+                       iE.save('ETL1C_01_new_data/'+fn, 'PNG')
                     shapes = 64, 64
 					#put the image into an array
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
@@ -56,6 +58,7 @@ def get_ETL_data(filenum):
 		#return array X and array Y
         return (X,Y)
 
+get_ETL_data(1)
 
 def data():
     test_size=0.2
