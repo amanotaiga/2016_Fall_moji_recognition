@@ -28,7 +28,6 @@ def read_record_ETL1C(f):
     iL = iF.convert('P')
     return r + (iL,)
 
-	
 
 def get_ETL_data(filenum):
         new_img = Image.new('P', (64, 64))
@@ -80,9 +79,6 @@ def data():
     X_test = x_test.reshape(x_test.shape[0],64,64,1)
     # convert class vectors to binary class matrices
     nb_classes = len(unique_labels)
-    nb_classes = 8
-    y_train = np.repeat(np.arange(8), 1445)
-    y_train, y_test = train_test_split(y_train, test_size=0.2)
     Y_train = np_utils.to_categorical(y_train, nb_classes)
     Y_test = np_utils.to_categorical(y_test, nb_classes)
     return X_train, Y_train, X_test, Y_test,nb_classes
@@ -93,7 +89,7 @@ n_output = Y_train.shape[1]
 
 datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.20)
 datagen.fit(X_train)
-input_shape = (64, 64, 1)
+input_shape = (1, 64, 64)
 
 model = Sequential()
 
@@ -101,8 +97,6 @@ def my_init(shape, name=None):
     return initializations.normal(shape, scale=0.1, name=name)
 
 
-# Best val_loss: 0.0205 - val_acc: 0.9978 (just tried only once)
-# 30 minutes on Amazon EC2 g2.2xlarge (NVIDIA GRID K520)
 def m6_1():
     model.add(Convolution2D(32, 3, 3, init=my_init, input_shape=input_shape))
     model.add(Activation('relu'))
@@ -134,7 +128,6 @@ def classic_neural():
 
 
 m6_1()
-# classic_neural()
 
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
