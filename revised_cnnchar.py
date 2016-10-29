@@ -31,17 +31,21 @@ def read_record_ETL1C(f):
 	
 
 def get_ETL_data(filenum):
-        new_img = Image.new('P', (32, 32))
+        new_img = Image.new('P', (64, 64))
         X = []
         Y = []
         filename = 'ETL1/ETL1C_{:02d}'.format(filenum)
         with open(filename, 'rb') as f:
-                f.seek(0 * 1445 * sz_record)
+            f.seek(0 * 1445 * sz_record)
+            for j in range(8):
                 for i in range(1445):
                     r = read_record_ETL1C(f)
                     new_img.paste(r[-1], (0,0))
                     iE = Image.eval(new_img, lambda x: 255-x*16)
-                    shapes = 32, 32
+                    #if(i%100==0):
+                       #fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
+                       #iE.save('ETL1C_01_new_data/'+fn, 'PNG')
+                    shapes = 64, 64
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
                     X.append(outData)	
                     Y.append(r[3])
@@ -72,11 +76,13 @@ def data():
     #X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
     #X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
     #input_shape = (1, 64, 64)
-    X_train = x_train.reshape(x_train.shape[0],1,32,32)
-    X_test = x_test.reshape(x_test.shape[0],1,32,32)
-    input_shape = (32, 32, 1)
+    X_train = x_train.reshape(x_train.shape[0],64,64,1)
+    X_test = x_test.reshape(x_test.shape[0],64,64,1)
     # convert class vectors to binary class matrices
     nb_classes = len(unique_labels)
+    nb_classes = 8
+    y_train = np.repeat(np.arange(8), 1445)
+    y_train, y_test = train_test_split(y_train, test_size=0.2)
     Y_train = np_utils.to_categorical(y_train, nb_classes)
     Y_test = np_utils.to_categorical(y_test, nb_classes)
     return X_train, Y_train, X_test, Y_test,nb_classes
@@ -87,7 +93,7 @@ n_output = Y_train.shape[1]
 
 datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.20)
 datagen.fit(X_train)
-
+input_shape = (64, 64, 1)
 
 model = Sequential()
 
