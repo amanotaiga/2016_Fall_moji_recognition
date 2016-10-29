@@ -2,3 +2,5 @@
 2016.10.27 able to read single file of ETL1C and ETL8G
 2016.10.28 able to read multi files of ETL1C ETL6 ETL7 ETL8G
   next goal:load ETL4、ETL5
+2016.10.29 try to write 2nd version to reading ETL1 but there are some problems in reshape and dimension.
+ 
