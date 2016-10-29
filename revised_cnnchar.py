@@ -81,23 +81,30 @@ def data():
     #X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
     #X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
     #input_shape = (1, 64, 64)
-    X_train = x_train.reshape(x_train.shape[0],64,64,1)
-    X_test = x_test.reshape(x_test.shape[0],64,64,1)
+    #X_train = x_train.reshape(x_train.shape[0],64,64,1)
+    #X_test = x_test.reshape(x_test.shape[0],64,64,1)
+    if K.image_dim_ordering() == 'th':
+        X_train = x_train.reshape(x_train.shape[0], 1, 64, 64)
+        X_test = x_test.reshape(x_test.shape[0], 1, 64, 64)
+        input_shape = (1, 64, 64)
+    else:
+        X_train = x_train.reshape(x_train.shape[0], 64, 64, 1)
+        X_test = x_test.reshape(x_test.shape[0], 64, 64, 1)
+        input_shape = (64, 64, 1)
     # convert class vectors to binary class matrices
     nb_classes = len(unique_labels)
     Y_train = np_utils.to_categorical(y_train, nb_classes)
     Y_test = np_utils.to_categorical(y_test, nb_classes)
-    return X_train, Y_train, X_test, Y_test,nb_classes
+    return X_train, Y_train, X_test, Y_test,nb_classes,input_shape
 
 	
-X_train, Y_train, X_test, Y_test,nb_classes = data()
+X_train, Y_train, X_test, Y_test,nb_classes,input_shape = data()
 n_output = Y_train.shape[1]
 
 datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.20)
 datagen.fit(X_train)
-input_shape = (1, 64, 64)
-
 model = Sequential()
+
 
 def my_init(shape, name=None):
     return initializations.normal(shape, scale=0.1, name=name)
@@ -138,5 +145,5 @@ m6_1()
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), samples_per_epoch=X_train.shape[0],
-                    nb_epoch=3, validation_data=(X_test, Y_test))	
+                    nb_epoch=30, validation_data=(X_test, Y_test))	
 
