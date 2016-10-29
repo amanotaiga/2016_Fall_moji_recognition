@@ -31,7 +31,7 @@ def read_record_ETL1C(f):
 	
 
 def get_ETL_data(filenum):
-        new_img = Image.new('P', (64*32, 63*30))
+        new_img = Image.new('P', (32, 32))
         X = []
         Y = []
         filename = 'ETL1/ETL1C_{:02d}'.format(filenum)
@@ -39,9 +39,9 @@ def get_ETL_data(filenum):
                 f.seek(0 * 1445 * sz_record)
                 for i in range(1445):
                     r = read_record_ETL1C(f)
-                    new_img.paste(r[-1], (64*(i%32), 64*(i/32)))
-                    iE = Image.eval(r[-1], lambda x: 255-x*16)
-                    shapes = 64, 63
+                    new_img.paste(r[-1], (0,0))
+                    iE = Image.eval(new_img, lambda x: 255-x*16)
+                    shapes = 32, 32
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
                     X.append(outData)	
                     Y.append(r[3])
@@ -51,7 +51,6 @@ def get_ETL_data(filenum):
 
 def data():
     test_size=0.2
-    size = (32, 32)
     for i in range(1, 2):
         chars, labs = get_ETL_data(i)
         if (i == 1):
@@ -70,9 +69,12 @@ def data():
                                                                          test_size=0.2,
                                                                          random_state=15)
     # reshape to (1, 64, 64)
-    X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
-    X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
-    input_shape = (1, 64, 64)
+    #X_train = x_train.reshape((x_train.shape[0], 1, x_train.shape[1], x_train.shape[2]))
+    #X_test = x_test.reshape((x_test.shape[0], 1, x_test.shape[1], x_test.shape[2]))
+    #input_shape = (1, 64, 64)
+    X_train = x_train.reshape(x_train.shape[0],1,32,32)
+    X_test = x_test.reshape(x_test.shape[0],1,32,32)
+    input_shape = (32, 32, 1)
     # convert class vectors to binary class matrices
     nb_classes = len(unique_labels)
     Y_train = np_utils.to_categorical(y_train, nb_classes)
