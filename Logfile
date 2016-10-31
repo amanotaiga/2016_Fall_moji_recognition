@@ -4,5 +4,6 @@
   next goal:load ETL4、ETL5
 2016.10.29 try to write 2nd version to reading ETL1 but there are some problems in reshape and dimension.
 2016.10.31 the dimension problems of 2nd version might be solved.
+divided original file into 3 parts.
    next goal:learn the structures of DNN.
  
