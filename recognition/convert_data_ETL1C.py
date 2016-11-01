@@ -18,8 +18,9 @@ from load_dataETL1C_1 import get_ETL_data
 
 def data():
     test_size=0.2
+    img_print = False
     for i in range(1, 2):
-        chars, labs = get_ETL_data(i)
+        chars, labs = get_ETL_data(i,img_print)
         if (i == 1):
             #get data X and data Y
             characters = chars

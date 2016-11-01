@@ -25,7 +25,7 @@ def read_record_ETL1C(f):
     return r + (iT,)
 
 
-def get_ETL_data(filenum):
+def get_ETL_data(filenum,img_print):
         new_img = Image.new('1', (64, 64))
         X = []
         Y = []
@@ -39,9 +39,10 @@ def get_ETL_data(filenum):
                     r = read_record_ETL1C(f)
                     new_img.paste(r[-1], (0,0))
                     iE = Image.eval(new_img, lambda x: not x)
-                    #if(i%100==0):
-                       #fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
-                       #iE.save('ETL1C_01_new_data/'+fn, 'PNG')
+                    if(img_print==True):
+                        if(i%100==0):
+                           fn = 'ETL1C_ds{:02d}  {:02d} {:03d}.png'.format(filenum,j,i)
+                           iE.save('ETL1C_01_new_data/'+fn, 'PNG')
                     shapes = 64, 64
 					#put the image into an array
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
