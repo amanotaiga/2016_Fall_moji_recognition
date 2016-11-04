@@ -15,14 +15,17 @@ new_img = Image.new('P', (64*32, 63*30))
 filename = 'ETL1/ETL1C_01'
 
 def store_array():
-    for f_num in (1,4):
-       filename = '/ETL1/ETL1C_{:02d}'.format(f_num)
+    for f_num in (7,13):
+       filename = 'ETL1/ETL1C_{:02d}'.format(f_num)
        with open(filename, 'r') as f:
-          ary = np.zeros([32, 1445, 63, 64], dtype=np.uint8)
+          ary = np.zeros([51, 1411, 63, 64], dtype=np.uint8)
           f.seek(0 * 2052)
-          for j in range(8):
+          set_range = 8
+          if(f_num==13):
+              set_range = 3
+          for j in range(set_range):
               moji = 0
-              for i in range(1445):
+              for i in range(1411):
                  r = read_record_ETL1C(f)
                  ary[(f_num-1)*8+j,moji] = np.array(r[-1])
                  moji += 1
@@ -30,7 +33,7 @@ def store_array():
                  #iE = Image.eval(r[-1], lambda x: 255-x*16)
                  #fn = 'ETL1GC_ds{:02d}{:03d}.png'.format(j,i)
                  #iE.save('ETL1C_01_data/'+fn, 'PNG')	
-    np.savez_compressed("ETL1C_1to4_data.npz", ary)
+    np.savez_compressed("ETL1C_7to13_data.npz", ary)
 
 
 store_array()		   
