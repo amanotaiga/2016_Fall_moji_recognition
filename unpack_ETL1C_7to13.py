@@ -29,10 +29,10 @@ def store_array():
                  r = read_record_ETL1C(f)
                  ary[(f_num-1)*8+j,moji] = np.array(r[-1])
                  moji += 1
-                 #new_img.paste(r[-1], (64*(i%32), 64*(i/32)))
-                 #iE = Image.eval(r[-1], lambda x: 255-x*16)
-                 #fn = 'ETL1GC_ds{:02d}{:03d}.png'.format(j,i)
-                 #iE.save('ETL1C_01_data/'+fn, 'PNG')	
+                 new_img.paste(r[-1], (64*(i%32), 64*(i/32)))
+                 iE = Image.eval(r[-1], lambda x: 255-x*16)
+                 fn = 'ETL1GC_ds{:02d}{:03d}.png'.format(j,i)
+                 iE.save('ETL1C_01_data/'+fn, 'PNG')	
     np.savez_compressed("ETL1C_7to13_data.npz", ary)
 
 
