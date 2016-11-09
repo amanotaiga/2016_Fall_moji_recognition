@@ -5,7 +5,7 @@
 2016.10.29 try to write 2nd version to reading ETL1 but there are some problems in reshape and dimension.
 2016.10.31 the dimension problems of 2nd version might be solved.
 divided original file into 3 parts.
-   next goal:learn the structures of RNN.
+   next goal:learn the structures of RNN and LSTM.
 2016.11.7 learned structure of RNN.
 2016.11.9 upload unpack of ETL6、ETL7
  
