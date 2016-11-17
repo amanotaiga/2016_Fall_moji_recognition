@@ -28,6 +28,6 @@ def store_array():
                       iE = Image.eval(r[-1], lambda x: 255-x*16)
                       fn = 'ETL6C_{:02d}_{:02d}_{:03d}.png'.format(f_num,j,i)
                       iE.save('/mnt/d/Desktop/ETL6C_data/'+fn, 'PNG')	
-    np.savez_compressed("ETL6C_1to5_data.npz", ary)
+    np.savez_compressed("ETL6C_kata_data.npz", ary)
 
 store_array()	

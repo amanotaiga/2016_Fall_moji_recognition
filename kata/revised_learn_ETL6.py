@@ -29,7 +29,7 @@ writer = 1383
 img_rows, img_cols = 32, 32
 # img_rows, img_cols = 127, 128
 
-ary = np.load("ETL6_kata.npz")['arr_0'].reshape([-1, 63, 64]).astype(np.float32) / 15
+ary = np.load("ETL6C_kata_data.npz")['arr_0'].reshape([-1, 63, 64]).astype(np.float32) / 15
 X_train = np.zeros([nb_classes * writer, img_rows, img_cols], dtype=np.float32)
 for i in range(nb_classes * writer):
     X_train[i] = scipy.misc.imresize(ary[i], (img_rows, img_cols), mode='F')
