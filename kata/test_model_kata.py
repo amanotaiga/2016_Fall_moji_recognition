@@ -67,15 +67,6 @@ def m6_1():
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-
-def classic_neural():
-    model.add(Flatten(input_shape=input_shape))
-    model.add(Dense(256))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(nb_classes))
-    model.add(Activation('softmax'))
-
 def m6_2():
     model.add(Convolution2D(32, 3, 3, init=my_init, input_shape=input_shape))
     model.add(Activation('relu'))
