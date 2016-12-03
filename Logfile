@@ -8,5 +8,6 @@ divided original file into 3 parts.
    next goal:learn the structures of RNN.
 2016.11.7 learned structure of RNN and LSTM.
 2016.11.9 upload unpack of ETL6、ETL7
+2016.11.25 could load handwriting character by user and make prediction.
  
  
