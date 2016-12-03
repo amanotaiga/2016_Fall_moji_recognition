@@ -1,5 +1,17 @@
 # 2016_Fall_moji_recognition
 
+###kata folder:  
+
+* load_data_kata.py
+load dataset from ETL folder
+
+* convert_data_kata.py
+convert data into training format
+
+* test_model_kata.py
+define model and training
+
+
 ###recognition folder:  
 
 * load_test_img.py  
