@@ -3,7 +3,7 @@
 ###kata folder:  
 
 * load_data_kata.py
-load dataset from ETL folder
+load dataset from ETL6 folder
 
 * convert_data_kata.py
 convert data into training format
@@ -11,6 +11,16 @@ convert data into training format
 * test_model_kata.py
 define model and training
 
+###hira folder:  
+
+* load_data_hira.py
+load dataset from ETL7 folder
+
+* convert_data_hira.py
+convert data into training format
+
+* test_model_hira.py
+define model and training
 
 ###recognition folder:  
 
