@@ -42,25 +42,31 @@ datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.20)
 datagen.fit(X_train)
 model = Sequential()
 
+
+def my_init(shape, name=None):
+    return initializations.normal(shape, scale=0.1, name=name)
+
+
 def m6_1():
-    model.add(Convolution2D(32, 3, 3,  input_shape=input_shape))
+    model.add(Convolution2D(32, 3, 3, init=my_init, input_shape=input_shape))
     model.add(Activation('relu'))
-    model.add(Convolution2D(32, 3, 3))
+    model.add(Convolution2D(32, 3, 3, init=my_init))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.5))
-    model.add(Convolution2D(64, 3, 3))
+    model.add(Convolution2D(64, 3, 3, init=my_init))
     model.add(Activation('relu'))
-    model.add(Convolution2D(64, 3, 3))
+    model.add(Convolution2D(64, 3, 3, init=my_init))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.5))
     model.add(Flatten())
-    model.add(Dense(256))
+    model.add(Dense(256, init=my_init))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
+
 
 def m6_2():
     model.add(Convolution2D(32, 3, 3, init=my_init, input_shape=input_shape))
@@ -86,12 +92,12 @@ def m6_2():
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-m6_1()
+m6_2()
 
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 history = model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), samples_per_epoch=X_train.shape[0],
-                    nb_epoch=30, validation_data=(X_val, Y_val))	
+                    nb_epoch=80, validation_data=(X_val, Y_val))	
 
 
 print(history.history.keys())
@@ -143,8 +149,8 @@ for j in range(48):
          print(map_character[key_map]),
 
 model_json = model.to_json()
-with open("model_hira_s.json", "w") as json_file:
+with open("model_hira.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("model_hira_s.h5")
+model.save_weights("model_hira.h5")
 print("Saved model to disk")

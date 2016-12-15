@@ -6,10 +6,7 @@ import h5py
 import tensorflow
 import scipy.misc
 
-
-sz_record = 2052
-
-def read_record_ETL7C(f):
+def read_record_ETL6C(f):
     s = f.read(2052)
     r = struct.unpack('>H2sH6BI4H4B4x2016s4x', s)
     iF = Image.frombytes('F', (64, 63), r[18], 'bit', 4)
@@ -28,17 +25,18 @@ def read_record_ETL7C(f):
 def get_ETL_data(filenum,img_print):
         new_img = Image.new('1', (64, 64))
         X = []
-        filename = 'ETL7/ETL7LC_{:01d}'.format(filenum)
+        filename = 'ETL6/ETL6C_{:02d}'.format(filenum)
         with open(filename, 'rb') as f:
-            set_range = 48
+            set_range = 10
             #8 different characters
             if(filenum==5):
                 set_range = 8
             for j in range(set_range):
-                for i in range(200):
-                    r = read_record_ETL7C(f)
+                for i in range(1383):
+                    r = read_record_ETL6C(f)
                     new_img.paste(r[-1], (0, 0))
                     iE = Image.eval(new_img, lambda x: x)
+                    #resize image to 32,32
                     iE.thumbnail((32,32))
                     if(img_print==True):
                         if(i%100==0):
@@ -48,6 +46,7 @@ def get_ETL_data(filenum,img_print):
 		            #put the image into an array
                     outData = np.asarray(iE.getdata()).reshape(shapes[0], shapes[1])
                     X.append(outData)	
+        #append the label of the image
         X = np.asarray(X, dtype=np.int32)
-		#return array X and array Y
+		#return array X
         return X
