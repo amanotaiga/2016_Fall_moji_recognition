@@ -40,7 +40,7 @@ def get_ETL_data(filenum,img_print):
                 for i in range(1383):
                     r = read_record_ETL6C(f)
                     new_img.paste(r[-1], (0, 0))
-                    iE = Image.eval(new_img, lambda x: not x)
+                    iE = Image.eval(new_img, lambda x: x)
                     #resize image to 32,32
                     iE.thumbnail((32,32))
                     if(img_print==True):
