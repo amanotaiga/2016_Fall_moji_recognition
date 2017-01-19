@@ -56,6 +56,6 @@ def testing_result(category):
     for i in range(1):
         key_map = y_pred[i]
         print(map_character[key_map]),
-		
+    return (map_character[key_map])
 if __name__ == "__main__":
     testing_result(category)

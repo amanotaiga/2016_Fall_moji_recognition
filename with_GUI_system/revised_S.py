@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import Tkinter as tk
 from PIL import Image,ImageDraw
 #from load_sample import get_testing_data
@@ -23,15 +24,18 @@ class MojiDrawing:
         self.C2.place(x=100,y=150)
         self.button = tk.Button(self.Groot,text="Save",width=5,bg='white',command=self.save)
         self.button.place(x=20,y=160)
+        self.showtext = tk.Text(self.Groot, height=2, width=10)
+        self.showtext.place(x=130,y=5)
         self.image=Image.new("RGB",(64,64))
         self.draw=ImageDraw.Draw(self.image)
 
     def save(self):
         filename = "Test_1.png"
         self.image.save(filename)
-        self.Groot.destroy()
+        #self.Groot.destroy()
         get_testing_data()
-        testing_result(self.category)
+        result = testing_result(self.category)
+        self.showtext.insert("1.0",result)
         if(self.category==0):
             print("Katakana") 
         elif(self.category==1):

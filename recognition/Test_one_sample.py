@@ -3,9 +3,6 @@ import keras.callbacks
 import keras.backend.tensorflow_backend as KTF
 import matplotlib 
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from keras.utils.visualize_util import plot
-from sklearn.metrics import classification_report,confusion_matrix
 from operator import itemgetter
 from keras.models import model_from_json
 import os
@@ -17,21 +14,16 @@ from keras import initializations
 from keras.layers import Convolution2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.models import Sequential
-from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils
-from sklearn.model_selection import train_test_split
 import tensorflow
 from tensorflow.python.ops import control_flow_ops 
 tensorflow.python.control_flow_ops = control_flow_ops
-
-
 np.set_printoptions(threshold=np.nan)
 
-nb_classes = 1
+nb_classes = 2
 writer = 1
 # input image dimensions
 img_rows, img_cols = 32, 32
-# img_rows, img_cols = 127, 128
 
 ary = np.load("Test.npz")['arr_0'].reshape([-1, 63, 64]).astype(np.float32) / 15
 X_train = np.zeros([nb_classes * writer, img_rows, img_cols], dtype=np.float32)
@@ -65,12 +57,15 @@ loaded_model.summary()
 # evaluate loaded model on test data
 loaded_model.compile(loss='sparse_categorical_crossentropy', optimizer='adadelta', metrics=['accuracy'])
 
-cbks = []
-
-#history = loaded_model.fit(X_train, Y_train, batch_size=1, nb_epoch=1, verbose=1, callbacks=cbks, validation_data=(X_val, Y_val))
-   
-score = loaded_model.evaluate(X_train, Y_train, verbose=1)
-print('Test accuracy:', score[1])
+map_character = ['ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ',
+'タ','チ','ツ','テ','ト','ナ','二','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ',
+'マ','ミ','ム','メ','モ','ヤ','ユ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン',
+' d',' o',' l',' r']
 
 y_pred = loaded_model.predict_classes(X_train)
 print(y_pred)
+
+for i in range(2):
+    key_map = y_pred[i]
+    print(map_character[key_map]),
+
