@@ -12,12 +12,9 @@ import os
 
 import struct
 import numpy as np
-from PIL import Image, ImageEnhance
-import numpy as np
 import h5py
 from keras.utils import np_utils
 from sklearn import datasets, metrics, cross_validation
-from sklearn.utils import shuffle
 from keras.models import Sequential
 import tensorflow
 from tensorflow.python.ops import control_flow_ops 
@@ -62,30 +59,6 @@ def m6_1():
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
 
-def m6_2():
-    model.add(Convolution2D(32, 3, 3, init=my_init, input_shape=input_shape))
-    model.add(Activation('relu'))
-    model.add(Convolution2D(32, 3, 3, init=my_init))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.5))
-    model.add(Convolution2D(64, 3, 3, init=my_init))
-    model.add(Activation('relu'))
-    model.add(Convolution2D(64, 3, 3, init=my_init))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.5))
-    model.add(Convolution2D(128, 3, 3, init=my_init))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.5))
-    model.add(Flatten())
-    model.add(Dense(512, init=my_init))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(nb_classes))
-    model.add(Activation('softmax'))
-
 m6_1()
 
 model.summary()
@@ -93,7 +66,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adadelta', metrics=['a
 history = model.fit_generator(datagen.flow(X_train, Y_train, batch_size=16), samples_per_epoch=X_train.shape[0],
                     nb_epoch=13, validation_data=(X_val, Y_val))	
 
-
+#plot the result
 print(history.history.keys())
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
@@ -118,8 +91,7 @@ plt.savefig('loss_kata_M1.png')
 y_pred = model.predict_classes(X_test)
 #print(y_pred)
 
-p=model.predict_proba(X_test) # to predict probability
-
+#show confusion matrix and classification report
 print(classification_report(np.argmax(Y_test,axis=1), y_pred))
 confusion = confusion_matrix(np.argmax(Y_test,axis=1), y_pred)
 print(confusion)
@@ -128,6 +100,7 @@ score = model.evaluate(X_test, Y_test, verbose=1)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
+#show top 3 items to be classified 
 sorted_row_idx = np.argsort(confusion, axis=1)[:,confusion.shape[1]-3::]
 print(sorted_row_idx)
 
@@ -142,6 +115,7 @@ for j in range(48):
          key_map = sorted_row_idx[j,i]
          print(map_character[key_map]),
 
+#save the model and weights
 model_json = model.to_json()
 with open("model_kata_S.json", "w") as json_file:
     json_file.write(model_json)
