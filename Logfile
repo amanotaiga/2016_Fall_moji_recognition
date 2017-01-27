@@ -22,3 +22,5 @@ divided original file into 3 parts.
 2017.1.7 finished Chapter6
 2017.1.15 reorganized the codes
 2017.1.18 used different models in training
+2017.1.27 try to read a sentence(without GUI version). 
+2017.1.27 changed the dataset for hiragana.
